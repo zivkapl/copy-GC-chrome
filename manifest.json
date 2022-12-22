@@ -1,0 +1,14 @@
+{
+    "name": "copy-GC",
+    "version": "1.0",
+    "manifest_version": 3,
+    "action": {},
+    "icons": { "2": "copy-gc-logo.png"},
+    "background": {
+        "service_worker": "background.js"
+    },
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ]
+}
