@@ -1,0 +1,52 @@
+button.copy-GC {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+button.copy-GC::after {
+    background-color: transparent;
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+
+button.copy-GC::before {
+    transform: scale(0);
+    color: #ddd;
+    content: attr(data-before-content);
+    position: absolute;
+    padding: 2px 5px;
+    bottom: 120%;
+    left: 0;
+    width: auto;
+    height: auto;
+    background-color: #543;
+    opacity: 0%;
+    border-radius: 10%;
+}
+
+button.copy-GC:hover::before {
+    transform: scale(1);
+    transition: opacity ease-out 200ms;
+    opacity: 100%;
+    background-color: #000;
+}
+
+svg.copy-GC {
+    margin: 0;
+    padding: 0;
+}
+
+/* button.copy-GC:active::before {
+    transform: scale(0);
+    opacity: 0;
+} */
+
+svg.copy-GC.copied {
+    fill: rgb(65, 177, 65);
+}

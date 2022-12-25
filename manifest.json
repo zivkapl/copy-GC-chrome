@@ -3,14 +3,18 @@
     "version": "1.0",
     "manifest_version": 3,
     "action": {},
-    "icons": { "2": "copy-gc-logo.png"},
-    "background": {
-        "service_worker": "background.js"
-    },
+    "icons": { "2": "media/copy-gc-logo.png"},
     "permissions": [
         "activeTab",
         "scripting",
         "clipboardWrite",
         "clipboardRead"
-    ]
+    ],
+    "content_scripts": [
+        {
+            "matches": ["https://guardicore.atlassian.net/jira/software/c/projects/*/boards/*"],
+            "js": ["src/dashboard-script.js"],
+            "css": ["src/styles.css"]
+          }
+      ]
 }
