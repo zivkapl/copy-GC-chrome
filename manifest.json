@@ -1,9 +1,10 @@
 {
     "name": "copy-GC",
-    "version": "1.0",
-    "manifest_version": 3,
-    "action": {},
-    "icons": { "2": "media/copy-gc-logo.png"},
+    "version": "1.1",
+    "manifest_version": 2,
+    "icons": {
+        "1200": "media/copy-gc-logo.png"
+    },
     "permissions": [
         "activeTab",
         "scripting",
@@ -12,9 +13,20 @@
     ],
     "content_scripts": [
         {
-            "matches": ["https://guardicore.atlassian.net/jira/software/c/projects/*/boards/*"],
-            "js": ["src/dashboard-script.js"],
-            "css": ["src/styles.css"]
-          }
-      ]
+            "matches": [
+                "https://guardicore.atlassian.net/jira/software/c/projects/*/boards/*"
+            ],
+            "js": [
+                "src/dashboard-script.js"
+            ],
+            "css": [
+                "src/styles.css"
+            ]
+        }
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "ziv.kaplan@guardicore.com"
+        }
+    }
 }
