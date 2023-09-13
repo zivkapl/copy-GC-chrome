@@ -1,6 +1,7 @@
 const UI_v1_handler = {
+    selector: ".js-issue",
     get_all_tickets: function(){
-        return document.querySelectorAll(".js-issue");
+        return document.querySelectorAll(this.selector);
     },
     get_ticket_id: function(ticket){
         return ticket.dataset.issueKey;
@@ -12,8 +13,9 @@ const UI_v1_handler = {
 }
 
 const UI_v2_handler = {
+    selector: '[id^="card-GC-"], [id^="card-RCM-"]',
     get_all_tickets: function(){
-        return document.querySelectorAll('[id^="card-GC-"]');
+        return document.querySelectorAll(this.selector);
     },  
     get_ticket_id: function(ticket){
         return ticket.id.replace("card-", "")
@@ -26,7 +28,7 @@ const UI_v2_handler = {
 
 function get_ui_handler(){
     // detect new UI
-    if (document.querySelector(".js-issue")){
+    if (document.querySelector(UI_v1_handler.selector)){
         return UI_v1_handler
     }
     return UI_v2_handler
@@ -79,22 +81,30 @@ function generateCopyButtonsOnScreen(event) {
     });
 }
 
-window.addEventListener("DOMContentLoaded", generateCopyButtonsOnScreen);
-window.addEventListener("load", generateCopyButtonsOnScreen);
-window.addEventListener("readystatechange", generateCopyButtonsOnScreen);
+let lastInvocationTime = 0;
+const DEBOUNCE_DELAY = 300; // milliseconds
 
-const observeUrlChange = () => {
-    let oldHref = document.location.href;
-    const body = document.querySelector("body");
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach(() => {
-            if (oldHref !== document.location.href) {
-                oldHref = document.location.href;
-                generateCopyButtonsOnScreen();
+function generateCopyButtonsDebounced() {
+    const now = Date.now();
+    if (now - lastInvocationTime > DEBOUNCE_DELAY) {
+        generateCopyButtonsOnScreen();
+        lastInvocationTime = now;
+    }
+}
+
+// Search for card changes. This also allows for site scrolling.
+let observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+        if (mutation.addedNodes.length) {
+            all_tickets = document.querySelectorAll(get_ui_handler().selector);
+            if (all_tickets.length){
+                generateCopyButtonsDebounced();
             }
-        });
+        }
     });
-    observer.observe(body, { childList: true, subtree: true });
-};
+});
 
-window.onload = observeUrlChange;
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
+});
